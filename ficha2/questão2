@@ -1,0 +1,22 @@
+#questao2
+estoque = []
+
+def adicionar_produto(nome, quantidade, preco):
+    estoque.append((nome, quantidade, preco))
+
+def mostrar_estoque():
+    total = 0
+    for nome, quantidade, preco in estoque:
+     print("Produto:",nome,"Quantidaede:", quantidade,"Preço:", preco)
+     total += quantidade * preco
+    print("Valor total do estoque:", total)
+
+while True:
+    nome = input("Nome do produto: ")
+    quantidade = int(input("Quantidade: "))
+    preco = float(input("Preço: "))
+    adicionar_produto(nome, quantidade, preco)
+    if input("Mais produtos (s/n)? ") != "s":
+     mostrar_estoque()
+     break
+
