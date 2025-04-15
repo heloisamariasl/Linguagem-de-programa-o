@@ -1,0 +1,50 @@
+# questão5
+import json
+import os
+
+ARQUIVO = "contatos.json"
+
+def carregar_contatos():
+	if os.path.exists(ARQUIVO):
+		with open(ARQUIVO, "r") as f:
+			return json.load(f)
+	return []
+
+def salvar_contatos():
+	with open(ARQUIVO, "w") as f:
+		json.dump(lista_de_contatos, f)
+
+lista_de_contatos = carregar_contatos()
+
+def adicionar_contato(nome, telefone, email):
+	lista_de_contatos.append({"nome": nome, "telefone": telefone, "email": email})
+	salvar_contatos()
+
+def mostrar_contatos():
+	for contato in lista_de_contatos:
+		print(contato["nome"], contato["telefone"], contato["email"])
+
+def buscar_contato(nome_busca):
+	for contato in lista_de_contatos:
+		if contato["nome"] == nome_busca:
+			print("Nome:", contato["nome"], "Telefone:", contato["telefone"], "Email:", contato["email"])
+			return
+	print("Contato não encontrado.")
+
+while True:
+	nome = input("Nome: ")
+	telefone = input("Telefone: ")
+	email = input("Email: ")
+	adicionar_contato(nome, telefone, email)
+	if input("Mais algum contato (s/n)? ") != "s":
+		break
+
+mostrar_contatos()
+
+nome_busca = input("Buscar contato pelo nome: ")
+buscar_contato(nome_busca)
+
+
+
+
+
