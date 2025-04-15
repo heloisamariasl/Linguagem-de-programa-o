@@ -1,0 +1,56 @@
+#questao4
+import json
+import os
+
+def carregar_dados():
+	if os.path.exists("dados.json"):
+		with open("dados.json", "r") as f:
+			dados = json.load(f)
+			return dados["usuarios"], dados["saldos"], dados["transacoes"]
+	return {"user": "hello"}, {"user": 0}, []
+
+def salvar_dados():
+	with open("dados.json", "w") as f:
+		json.dump({"usuarios": usuarios, "saldos": saldos, "transacoes": transacoes}, f)
+
+usuarios, saldos, transacoes = carregar_dados()
+
+def login():
+	while True:
+		usuario = input("Usuário: ")
+		senha = input("Senha: ")
+		if usuario in usuarios and usuarios[usuario] == senha:
+			print("Seu login deu certo! :)")
+			return usuario
+		print("Login falhou. Por favor, tente novamente! :(")
+
+usuario = login()
+if usuario not in saldos:
+	saldos[usuario] = 0
+
+def depositar(usuario, dinheiro):
+	saldos[usuario] += dinheiro
+	transacoes.append([usuario, "Depósito", dinheiro])
+	salvar_dados()
+
+def sacar(usuario, dinheiro):
+	if saldos[usuario] >= dinheiro:
+		saldos[usuario] -= dinheiro
+		transacoes.append([usuario, "Saque", dinheiro])
+		salvar_dados()
+	else:
+		print("Saldo insuficiente :(")
+
+def mostrar_transacoes():
+	print(f"São essas as transações feitas: {transacoes}")
+
+while True:
+	acao = input("[D]epositar, [S]acar ou [T]ransações: ").lower()
+	if acao == "d":
+		depositar(usuario, float(input("Valor do depósito: ")))
+	elif acao == "s":
+		sacar(usuario, float(input("Valor do saque: ")))
+	elif acao == "t":
+		mostrar_transacoes()
+	else:
+		break
